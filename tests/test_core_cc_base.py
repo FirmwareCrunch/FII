@@ -1,0 +1,72 @@
+################################################################################
+#
+# Copyright 2022-2025 Vincent Dary
+#
+# This file is part of FII.
+#
+# FII is free software: you can redistribute it and/or modify it under the terms
+# of the GNU General Public License as published by the Free Software Foundation
+# , either version 3 of the License, or (at your option) any later version.
+#
+# FII is distributed in the hope that it will be useful, but WITHOUT ANY
+# WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+# A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License along with
+# FII. If not, see <https://www.gnu.org/licenses/>.
+#
+################################################################################
+
+import pytest
+
+from FII.core.ctypes.ctypes_base import UnsignedInt, FunctionSpec
+from FII.core.cc_base import (
+    CallingConvention, CpuContext, FuncArg, ReturnValue)
+
+
+def test_calling_convention_set_pc_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().set_pc(0xff)
+
+
+def test_calling_convention_get_return_address_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().get_return_address()
+
+
+def test_calling_convention_get_cpu_context_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().get_cpu_context()
+
+
+def test_calling_convention_get_argument_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().get_arguments(FunctionSpec('foo'))
+
+
+def test_calling_convention_set_argument_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().set_arguments(FunctionSpec('foo'),
+                                          {0: UnsignedInt(1)})
+
+
+def test_calling_convention_get_return_value_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().get_return_value(None)
+
+
+def test_calling_convention_set_return_value_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().set_return_value(
+            FunctionSpec('test'), UnsignedInt(1))
+
+
+def test_calling_convention_call_not_implemented():
+    with pytest.raises(NotImplementedError):
+        CallingConvention().call(FunctionSpec('test'), {0: UnsignedInt(1)})
+
+
+def test_calling_convention_only_code_coverage():
+    CpuContext()
+    FuncArg(0, UnsignedInt(1), FunctionSpec(), lambda *args: None).write()
+    ReturnValue(UnsignedInt(0), FunctionSpec(), lambda *args: None).write()
